@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom'
+;
+import {
+  Container,
+  Header,
+  Label,
+  Input,
+  Button,
+  ErrorMessage,
+  SuccessMessage,
+  LoginBack,
+} from './styles/Signupstyled';
 
 type User = {
   email: string;
@@ -8,76 +18,6 @@ type User = {
   confirmPassword: string;
   username: string;
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  border-radius: 10px;
-  margin: 0 auto;
-  width: 100%;
-`;
-
-const Header = styled.h1`
-  color: #0074e4;
-  text-align: center;
-`;
-
-const Label = styled.label`
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #333;
-  text-align: center;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 16px;
-  border: 1px solid #0074e4;
-  border-radius: 4px;
-  font-size: 16px;
-  outline: none;
-  transition: border 0.3s;
-  &:focus {
-    border-color: #0074e4;
-  }
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #0074e4;
-  color: #fff;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  outline: none;
-  text-align: center;
-  display: block;
-  margin: 0 auto;
-`;
-
-const ErrorMessage = styled.span`
-  color: red;
-  font-size: 14px;
-  margin-top: -8px;
-  margin-bottom: 8px;
-  display: block;
-`;
-
-const SucessMessage = styled.div`
-  font-size: 20px;
-`
-
-const LoginBack = styled.div`
-  text-align: center;
-`
 
 function Signup() {
   const [user, setUser] = useState<User>({
@@ -127,26 +67,25 @@ function Signup() {
 
   const handleSignUp = () => {
     if (isEmailValid && isPasswordValid && isPasswordsMatching && user.email && user.password) {
-      const userWithoutConfirmPassword = {
-        email: user.email,
-        password: user.password,
-        username: user.username,
-      };
-      const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      storedUsers.push(userWithoutConfirmPassword);
-      localStorage.setItem('users', JSON.stringify(storedUsers));
-
-      setIsSignUpSuccessful(true);
     } else {
       alert('양식을 올바르게 작성해주세요.');
     }
   };
 
+  const [email, setEmail] = useState('');
+
+  const handleSignup = () => {
+    window.location.href = '/verify'; 
+  }
+
   return (
     <Container>
-      <Header>우리 학교 알리미<br />회원가입</Header>
+      <Header>
+        우리 학교 알리미
+        <br />회원가입
+      </Header>
       {isSignUpSuccessful ? (
-        <SucessMessage>회원가입</SucessMessage>
+        <SuccessMessage>회원가입</SuccessMessage>
       ) : (
         <div>
           <div>
@@ -189,7 +128,7 @@ function Signup() {
             )}
           </div>
           <div>
-            <Label htmlFor="username">닉네임<br /></Label>
+            <Label htmlFor="username">닉네임</Label>
             <Input
               type="text"
               name="username"
@@ -200,8 +139,11 @@ function Signup() {
           </div>
           <Button onClick={handleSignUp}>회원가입</Button>
           <div>
-      <LoginBack><br/>이미 계정이 있으신가요? <Link to="/">로그인</Link></LoginBack>
-    </div>
+            <LoginBack>
+              <br />
+              이미 계정이 있으신가요? <Link to="/">로그인</Link>
+            </LoginBack>
+          </div>
         </div>
       )}
     </Container>
